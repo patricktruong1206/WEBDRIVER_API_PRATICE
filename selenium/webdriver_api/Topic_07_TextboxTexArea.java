@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -35,7 +36,7 @@ public class Topic_07_TextboxTexArea {
 	By usernameTextbox = By.xpath("//input[@name='uid']");
 	By passwordTextbox = By.xpath("//input[@name='password']");
 	By loginBtn = By.xpath("//input[@name='btnLogin']");
-	By welcomeText= By.xpath("//td[text()='Manger Id : mngr423134']");
+	By welcomeText= By.xpath("//td[text()='Manger Id : mngr424737']");
 	By newCustomer= By.xpath("//a[text()='New Customer']");
 	By editCustomer = By.xpath("//a[text()='Edit Customer']");
 	By customerIdTextbox= By.xpath("//input[@name='cusid']");
@@ -61,14 +62,20 @@ public class Topic_07_TextboxTexArea {
 	By phoneResult= By.xpath("//td[text()='Mobile No.']/following-sibling::td");
 	By emailResult= By.xpath("//td[text()='email']/following-sibling::td");
 	
+	By orangeUsername= By.xpath("//input[@id='txtUsername']");
+	By orangePass= By.xpath("//input[@id='txtPassword']");
+	By orangeLoginbtn=By.xpath("//input[@id='btnLogin']");
+	
+	
 	
 	
 	
 
 	@BeforeClass
 	public void beforeClass() {
-		System.setProperty("webdriver.chrome.driver", ".//libraries//chromedriveVer102.exe");
-		driver = new ChromeDriver();
+		String rootFolder= System.getProperty("user.dir");
+		System.setProperty("webdriver.gecko.driver",rootFolder+"\\libraries\\geckodriver.exe");
+		driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 	}
@@ -79,8 +86,8 @@ public class Topic_07_TextboxTexArea {
 		sendKeyToElement(usernameTextbox,username);
 		sendKeyToElement(passwordTextbox,password);
 		clickElement(loginBtn);
-		Thread.sleep(3000);
-		Assert.assertEquals("Manger Id : "+username, driver.findElement(welcomeText).getText());
+		
+		Assert.assertEquals("Manger Id : "+username, driver.findElement(welcomeText).getText(),username);
 		clickElement(newCustomer);
 		sendKeyToElement(customerNameTextbox,customerName);
 		clickElement(genderFemale);
@@ -124,11 +131,18 @@ public class Topic_07_TextboxTexArea {
 		Assert.assertEquals(driver.switchTo().alert().getText(), "No Changes made to Customer records");
 
 	}
-/*
+
 	@Test
-	public void TC_02_() {
-		driver.get("");
+	public void TC_02() {
+		driver.get("https://opensource-demo.orangehrmlive.com/");
+		sendKeyToElement(orangeUsername,"Admin");
+		sendKeyToElement(orangePass,"admin123");
+		clickElement(orangeLoginbtn);
+		driver.get("https://opensource-demo.orangehrmlive.com/index.php/pim/addEmployee");
+		
+		
 	}
+	/*
 	@Test
 	public void TC_03_() {
 		driver.get("");
